@@ -21,15 +21,15 @@ Miscellaneous=[ 'Atta ', 'Sugar ', 'Ghee ', 'Rice', 'Tata Namak ', 'Chai Patti '
 
 def load_data():
     try:
-        df = pd.read_excel(EXCEL_FILE, sheet_name=SHEET_NAME)
-        df["Mobile No"] = df["Mobile No"].astype(str).str.strip()
+        df = pd.read_excel(EXCEL_FILE, sheet_name=SHEET_NAME,,dtype={"Mobile No": str})
+        
         return df
     except FileNotFoundError:
         return pd.DataFrame(columns=["Pid","Supplier Type","Supplier Name","Email","Mobile No","Address","Product Name","Category","Price","Quantity","Unit","Expiry_date","Issued To","Issued Name","Issued Date","Issued Quantity","Issued Unit","Reciever Name","Receiver Contact","Receiver Email","Receiver Address"])
 
 
 def save_data(df):
-    df["Mobile No"] = df["Mobile No"].astype(str) 
+    df["Mobile No"] = df["Mobile No"].astype(str)
     try:
         with pd.ExcelWriter(EXCEL_FILE, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
             df.to_excel(writer, index=False, sheet_name=SHEET_NAME)
