@@ -24,7 +24,7 @@ credentials = Credentials.from_service_account_info(service_account_info)
 
 gc = gspread.authorize(credentials)
 
-sh = gc.open('Inventory') 
+sh = gc.open('1EsAikSPKVwGTlnlScVt6zquRMGiYguNTAvxnJWnAvpI') 
 worksheet = sh.worksheet('Sheet1')
 data = get_as_dataframe(worksheet)
 
