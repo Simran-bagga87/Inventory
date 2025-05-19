@@ -4,12 +4,15 @@ from openpyxl import load_workbook
 import numpy as np
 import gspread
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
-from oauth2client.service_account import ServiceAccountCredentials
-
+from google.oauth2.service_account import Credentials
 import json
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("service_account.json", scope)
+import gspread
+from google.oauth2.service_account import Credentials
+
+# If using streamlit secrets
+creds = Credentials.from_service_account_info(st.secrets["gsheets"])
 client = gspread.authorize(creds)
+
 sheet = client.open("InventoryData").sheet1
 
 # worksheet = sh.worksheet('Sheet1')
