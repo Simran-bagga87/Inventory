@@ -2,9 +2,22 @@ import streamlit as st
 import pandas as pd
 from openpyxl import load_workbook
 import numpy as np
-EXCEL_FILE = 'inventory.xlsx'
-SHEET_NAME = 'Sheet1'
+import gspread
+from google.oauth2.service_account import Credentials
+from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
+import json
+
+json_path = r"C:\Users\SimranBagga\Documents\Inventory\sunlit-sweep-434508-s0-f35c0235ea4d.json"
+gc = gspread.service_account(filename=json_path)
+sh = gc.open('Inventory') 
+worksheet = sh.worksheet('Sheet1')
+data = get_as_dataframe(worksheet)
+
+
+def update_google_sheet(df):
+    worksheet.clear()
+    set_with_dataframe(worksheet, df)
 
 name_of_product = ['Atta ', 'Sugar ', 'Ghee ', 'Mah Dal', 'Chana Dal ', 'Chilka Dal', 'Hari Dal ', 'Mung Dal ', 'Masoor Dal ', 'Rise', 'Oil ', 'Tata Namak ', 'Chai Patti ', 'Rajma ', 'Kale chane ', 'Chole ', 'Garam Powder', 'Jeera Sabut', 'Dhaniya Powder', 'Jeera powder', 'Dhaniya Powder', 'Dhaniya Sabut', 'Haldi powder', 'Lal Mirch Powder', 'Lal Mirch Sabut', 'Deggi Mirch Powder ', 'Kasuri Methi ', 'Dal Makhani Powder', 'Shahi Paneer Powder', 'Rajma Powder', 'Chana Powder', 'Lobia ', 'Moth Dal ', 'Urad Dhuli Dal ', 'Seviyan ', 'Soya bean ', 'Suji ', 'Jaggery ', 'Besan ', 'Meda ', 'Daliya ', 'ROOHAFZA', 'Achar ', 'Amchoor powder ', 'Sabji powder ', 'Kitchan King Powder', 'Methi Dana ', 'Hari Elaichi ', 'Long ', 'Kali MIrch Sabut ', 'Kali Mirch Powder', 'Ajwain ', 'Fennel ', 'Baking Powder', 'Chaat POwder', 'Mix Powder', 'Elaichi ', 'Badam Giri ', 'Badam Chilka ', 'Kaju ', 'Kishmish ', 'Wheat ', 'Rai Sabut ', 'Rai Powder', 'Brown Sirka ', 'Kastard', 'coffe Powder', 'Kale Til', 'Honey', 'Nariyal oil ', 'Colour ', 'Bundi ', 'Poha ', 'Sabut Dana ', 'Mungfali Dana ']
 pulses = ['Mah Dal', 'Chana Dal ', 'Chilka Dal', 'Hari Dal ', 'Mung Dal ', 'Masoor Dal ', 'Rajma ', 'Chole ', 'Kale chane ', 'Moth Dal ', 'Urad Dhuli Dal ', 'Lobia ', 'Kaale Til']
@@ -19,28 +32,29 @@ Miscellaneous=[ 'Atta ', 'Sugar ', 'Ghee ', 'Rice', 'Tata Namak ', 'Chai Patti '
 
 
 
-def load_data():
-    try:
-        df = pd.read_excel(EXCEL_FILE, sheet_name=SHEET_NAME,dtype={"Mobile No": str})
+# def load_data():
+#     try:
+#         df = pd.read_excel(EXCEL_FILE, sheet_name=SHEET_NAME,dtype={"Mobile No": str})
         
-        return df
-    except FileNotFoundError:
-        return pd.DataFrame(columns=["Pid","Supplier Type","Supplier Name","Email","Mobile No","Address","Product Name","Category","Price","Quantity","Unit","Expiry_date","Issued To","Issued Name","Issued Date","Issued Quantity","Issued Unit","Reciever Name","Receiver Contact","Receiver Email","Receiver Address"])
+#         return df
+#     except FileNotFoundError:
+#         return pd.DataFrame(columns=["Pid","Supplier Type","Supplier Name","Email","Mobile No","Address","Product Name","Category","Price","Quantity","Unit","Expiry_date","Issued To","Issued Name","Issued Date","Issued Quantity","Issued Unit","Reciever Name","Receiver Contact","Receiver Email","Receiver Address"])
 
 
-def save_data(df):
-    df["Mobile No"] = df["Mobile No"].astype(str)
-    try:
-        with pd.ExcelWriter(EXCEL_FILE, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
-            df.to_excel(writer, index=False, sheet_name=SHEET_NAME)
-    except FileNotFoundError:
-        with pd.ExcelWriter(EXCEL_FILE, engine='openpyxl', mode='w') as writer:
-            df.to_excel(writer, index=False, sheet_name=SHEET_NAME)
+# def save_data(df):
+#     df["Mobile No"] = df["Mobile No"].astype(str)
+#     try:
+#         with pd.ExcelWriter(EXCEL_FILE, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+#             df.to_excel(writer, index=False, sheet_name=SHEET_NAME)
+#     except FileNotFoundError:
+#         with pd.ExcelWriter(EXCEL_FILE, engine='openpyxl', mode='w') as writer:
+#             df.to_excel(writer, index=False, sheet_name=SHEET_NAME)
         
 
 st.header("Retail story inventory information")
 option = st.radio("Select one option",["Purchase","Donate","Issue"])
-data = load_data()
+
+
 
 
 # FOR THE NAME ADDRESS AND EMAIL 
@@ -170,11 +184,10 @@ if option == "Purchase":
                     "Unit":Unit,
                     "Expiry_date":Expiry_date}
         
-        new_entry = pd.DataFrame([data_entry])
-        df = pd.concat([data,new_entry],ignore_index=True)
-        
-        save_data(df)
-        st.write(oil)
+        new_row_df = pd.DataFrame([data_entry])
+        updated_data = pd.concat([data, new_row_df], ignore_index=True)
+        update_google_sheet(updated_data)
+       
         
 
         
