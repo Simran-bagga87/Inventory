@@ -7,7 +7,7 @@ from google.oauth2.service_account import Credentials
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 import json
 service_account_info = {
-    "type": st.secrets["type"],
+    "type": st.secrets["gcp_service_account"]["type"],
     "project_id": st.secrets["project_id"],
     "private_key_id": st.secrets["private_key_id"],
     "private_key": st.secrets["private_key"],
