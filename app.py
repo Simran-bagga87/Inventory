@@ -16,7 +16,6 @@ data = get_as_dataframe(worksheet)
 
 
 def update_google_sheet(df):
-    worksheet.clear()
     set_with_dataframe(worksheet, df)
 
 name_of_product = ['Atta ', 'Sugar ', 'Ghee ', 'Mah Dal', 'Chana Dal ', 'Chilka Dal', 'Hari Dal ', 'Mung Dal ', 'Masoor Dal ', 'Rise', 'Oil ', 'Tata Namak ', 'Chai Patti ', 'Rajma ', 'Kale chane ', 'Chole ', 'Garam Powder', 'Jeera Sabut', 'Dhaniya Powder', 'Jeera powder', 'Dhaniya Powder', 'Dhaniya Sabut', 'Haldi powder', 'Lal Mirch Powder', 'Lal Mirch Sabut', 'Deggi Mirch Powder ', 'Kasuri Methi ', 'Dal Makhani Powder', 'Shahi Paneer Powder', 'Rajma Powder', 'Chana Powder', 'Lobia ', 'Moth Dal ', 'Urad Dhuli Dal ', 'Seviyan ', 'Soya bean ', 'Suji ', 'Jaggery ', 'Besan ', 'Meda ', 'Daliya ', 'ROOHAFZA', 'Achar ', 'Amchoor powder ', 'Sabji powder ', 'Kitchan King Powder', 'Methi Dana ', 'Hari Elaichi ', 'Long ', 'Kali MIrch Sabut ', 'Kali Mirch Powder', 'Ajwain ', 'Fennel ', 'Baking Powder', 'Chaat POwder', 'Mix Powder', 'Elaichi ', 'Badam Giri ', 'Badam Chilka ', 'Kaju ', 'Kishmish ', 'Wheat ', 'Rai Sabut ', 'Rai Powder', 'Brown Sirka ', 'Kastard', 'coffe Powder', 'Kale Til', 'Honey', 'Nariyal oil ', 'Colour ', 'Bundi ', 'Poha ', 'Sabut Dana ', 'Mungfali Dana ']
@@ -186,9 +185,10 @@ if option == "Purchase":
         
         new_row_df = pd.DataFrame([data_entry])
         updated_data = pd.concat([data, new_row_df], ignore_index=True)
-        update_google_sheet(updated_data)
-       
         
+        update_google_sheet(updated_data)
+        
+        data = get_as_dataframe(worksheet)
 
         
 
