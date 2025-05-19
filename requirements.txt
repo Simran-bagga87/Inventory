@@ -5,3 +5,5 @@ numpy
 gspread
 google-auth
 gspread-dataframe
+GSheetsConnection
+
