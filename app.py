@@ -6,11 +6,13 @@ import gspread
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 import json
 
-gc = gspread.public() 
-sh = gc.open_by_url('https://docs.google.com/spreadsheets/d/1EsAikSPKVwGTlnlScVt6zquRMGiYguNTAvxnJWnAvpI/edit?pli=1&gid=0#gid=0')
+conn = st.connection("gsheets", type=GSheetsConnection)
+df = conn.read(worksheet="Sheet1")
 
-worksheet = sh.worksheet('Sheet1')
-data = get_as_dataframe(worksheet, evaluate_formulas=True, header=0, include_index=False, dtype=str)
+st.dataframe(df)
+
+# worksheet = sh.worksheet('Sheet1')
+# data = get_as_dataframe(worksheet, evaluate_formulas=True, header=0, include_index=False, dtype=str)
 
 
 
