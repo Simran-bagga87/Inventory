@@ -21,7 +21,7 @@ Miscellaneous=[ 'Atta ', 'Sugar ', 'Ghee ', 'Rice', 'Tata Namak ', 'Chai Patti '
 
 def load_data():
     try:
-        df = pd.read_excel(EXCEL_FILE, sheet_name=SHEET_NAME,,dtype={"Mobile No": str})
+        df = pd.read_excel(EXCEL_FILE, sheet_name=SHEET_NAME,dtype={"Mobile No": str})
         
         return df
     except FileNotFoundError:
