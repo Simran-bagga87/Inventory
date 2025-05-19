@@ -4,7 +4,6 @@ from openpyxl import load_workbook
 import numpy as np
 import gspread
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
-from streamlit_gsheets import GSheetsConnection
 from oauth2client.service_account import ServiceAccountCredentials
 
 import json
