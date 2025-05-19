@@ -5,13 +5,13 @@ import numpy as np
 import gspread
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 from streamlit_gsheets import GSheetsConnection
+from oauth2client.service_account import ServiceAccountCredentials
 
 import json
-
-conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read(worksheet="Sheet1")
-
-st.dataframe(df)
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_name("service_account.json", scope)
+client = gspread.authorize(creds)
+sheet = client.open("InventoryData").sheet1
 
 # worksheet = sh.worksheet('Sheet1')
 # data = get_as_dataframe(worksheet, evaluate_formulas=True, header=0, include_index=False, dtype=str)
