@@ -8,7 +8,7 @@ from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
 import json
 
-json_path = r"C:\Users\SimranBagga\Documents\Inventory\sunlit-sweep-434508-s0-f35c0235ea4d.json"
+json_path = r"sunlit-sweep-434508-s0-f35c0235ea4d.json"
 gc = gspread.service_account(filename=json_path)
 sh = gc.open('Inventory') 
 worksheet = sh.worksheet('Sheet1')
