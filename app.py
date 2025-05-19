@@ -53,7 +53,7 @@ if option == "Purchase":
    
         
     if contact:
-        match = data["Mobile No"].astype(str).str.strip() == (contact+".0")
+        match = data["Mobile No"].astype(str).str.strip() == contact
         if match.any():
             matched_row = data[match].iloc[0]
             pre_name = matched_row["Supplier Name"]
