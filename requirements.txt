@@ -2,3 +2,6 @@ streamlit
 pandas
 openpyxl
 numpy
+gspread
+google-auth
+gspread-dataframe
