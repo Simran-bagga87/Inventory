@@ -1,11 +1,7 @@
-streamlit==1.25.0
-pandas==1.5.3
-openpyxl==3.1.2
-numpy==1.24.3
-gspread==5.7.2
-google-auth==2.20.0
-gspread-dataframe==3.2.2
-streamlit-gsheets==0.0.14
-
-
+pandas
+numpy
+streamlit
+streamlit-gsheets
+gspread
+google-auth
 
