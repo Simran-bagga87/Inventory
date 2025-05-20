@@ -4,4 +4,3 @@ pandas
 gspread-dataframe
 google-auth
 openpyxl
-streamlit-gsheets-connection
