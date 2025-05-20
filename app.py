@@ -8,17 +8,14 @@ from google.oauth2.service_account import Credentials
 import json
 import gspread
 from google.oauth2.service_account import Credentials
+from streamlit_gsheets import GSheetsConnection
 
-# If using streamlit secrets
-creds = Credentials.from_service_account_info(st.secrets["gsheets"])
-client = gspread.authorize(creds)
+st.title("Read Google Sheet as DataFrame")
 
-sheet = client.open("InventoryData").sheet1
+conn = st.connection("gsheets", type=GSheetsConnection)
+df = conn.read(worksheet="Example 1")
 
-# worksheet = sh.worksheet('Sheet1')
-# data = get_as_dataframe(worksheet, evaluate_formulas=True, header=0, include_index=False, dtype=str)
-
-
+st.dataframe(df)
 
 def update_google_sheet(df):
     set_with_dataframe(worksheet, df)
