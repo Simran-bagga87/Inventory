@@ -8,17 +8,22 @@ from google.oauth2.service_account import Credentials
 import json
 import gspread
 from google.oauth2.service_account import Credentials
-from streamlit_gsheets import GSheetsConnection
+SCOPES = ["https://www.googleapis.com/auth/spreadsheets",
+          "https://www.googleapis.com/auth/drive"]
 
-st.title("Read Google Sheet as DataFrame")
-
-conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read(worksheet="Example 1")
-
+credentials = Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=SCOPES)
+client = gspread.authorize(credentials)
+spreadsheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1EsAikSPKVwGTlnlScVt6zquRMGiYguNTAvxnJWnAvpI")
+worksheet = spreadsheet.get_worksheet(0)
+data = worksheet.get_all_records()
+df = pd.DataFrame(data)
+st.title("📊 Google Sheet Viewer")
 st.dataframe(df)
 
-def update_google_sheet(df):
-    set_with_dataframe(worksheet, df)
+
+
+
+
 
 name_of_product = ['Atta ', 'Sugar ', 'Ghee ', 'Mah Dal', 'Chana Dal ', 'Chilka Dal', 'Hari Dal ', 'Mung Dal ', 'Masoor Dal ', 'Rise', 'Oil ', 'Tata Namak ', 'Chai Patti ', 'Rajma ', 'Kale chane ', 'Chole ', 'Garam Powder', 'Jeera Sabut', 'Dhaniya Powder', 'Jeera powder', 'Dhaniya Powder', 'Dhaniya Sabut', 'Haldi powder', 'Lal Mirch Powder', 'Lal Mirch Sabut', 'Deggi Mirch Powder ', 'Kasuri Methi ', 'Dal Makhani Powder', 'Shahi Paneer Powder', 'Rajma Powder', 'Chana Powder', 'Lobia ', 'Moth Dal ', 'Urad Dhuli Dal ', 'Seviyan ', 'Soya bean ', 'Suji ', 'Jaggery ', 'Besan ', 'Meda ', 'Daliya ', 'ROOHAFZA', 'Achar ', 'Amchoor powder ', 'Sabji powder ', 'Kitchan King Powder', 'Methi Dana ', 'Hari Elaichi ', 'Long ', 'Kali MIrch Sabut ', 'Kali Mirch Powder', 'Ajwain ', 'Fennel ', 'Baking Powder', 'Chaat POwder', 'Mix Powder', 'Elaichi ', 'Badam Giri ', 'Badam Chilka ', 'Kaju ', 'Kishmish ', 'Wheat ', 'Rai Sabut ', 'Rai Powder', 'Brown Sirka ', 'Kastard', 'coffe Powder', 'Kale Til', 'Honey', 'Nariyal oil ', 'Colour ', 'Bundi ', 'Poha ', 'Sabut Dana ', 'Mungfali Dana ']
 pulses = ['Mah Dal', 'Chana Dal ', 'Chilka Dal', 'Hari Dal ', 'Mung Dal ', 'Masoor Dal ', 'Rajma ', 'Chole ', 'Kale chane ', 'Moth Dal ', 'Urad Dhuli Dal ', 'Lobia ', 'Kaale Til']
